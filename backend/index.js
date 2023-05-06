@@ -42,18 +42,30 @@ app.post("/signup",async(req,res)=>{
     console.log(req.body)
     const {email} = req.body;
 
-    userModel.findOne({email:email},(err,result)=>{
-        console.log(result)
-        console.log(err)
-        if(result){
-            res.send({message: "Email id is already registered"})
-        }
-        else{
-            const data = userModel(req.body)
-            const save = data.save()
-            res.send({message:"Successfully sign up"})
-        }
-    })
+//     userModel.findOne({email:email},(err,result)=>{
+//         console.log(result)
+//         console.log(err)
+//         if(result){
+//             res.send({message: "Email id is already registered"})
+//         }
+//         else{
+//             const data = userModel(req.body)
+//             const save = data.save()
+//             res.send({message:"Successfully sign up"})
+//         }
+//     })
+    
+      // change here 
+    const resultData = await  userModel.findOne({email : email})
+    console.log(resultData)
+    if(!resultData){
+        const data = userModel(req.body)
+                const save = data.save()
+                res.send({message:"Successfully sign up"})
+    }
+    else{
+        res.send({message: "Email id is already registered"})
+    }
 })
 
 app.listen(PORT,()=>console.log("Server is running at port : " + PORT))
